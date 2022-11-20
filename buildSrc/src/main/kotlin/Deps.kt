@@ -5,6 +5,12 @@ object BuildPlugins {
 
 object Deps {
 
+    object Room {
+        private val version = "2.5.0-beta02"
+        val runtime = "androidx.room:room-ktx:$version"
+        val processor = "androidx.room:room-compiler:$version"
+    }
+
     object Compose {
         val version = "1.4.0-alpha02"
         val composeUi = "androidx.compose.ui:ui:$version"

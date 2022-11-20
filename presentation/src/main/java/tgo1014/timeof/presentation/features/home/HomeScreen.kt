@@ -13,12 +13,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -42,8 +46,7 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     HomeScreen(
-        whateverList = state.whateverList,
-        onCreateWhatever = viewModel::createWhatever
+        whateverList = state.whateverList, onCreateWhatever = viewModel::createWhatever
     )
 }
 
@@ -51,10 +54,12 @@ fun HomeScreen(
 @Composable
 private fun HomeScreen(
     whateverList: List<WhateverPresentation>,
-    onCreateWhatever: (String) -> Unit = {},
+    onCreateWhatever: (name: String, duration: Int) -> Unit = { _, _ -> },
 ) {
     val topAppBarScrollState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarScrollState)
+    var name by remember { mutableStateOf("") }
+    var durationInt by remember { mutableStateOf(0) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -68,8 +73,7 @@ private fun HomeScreen(
                         )
                         Spacer(Modifier.size(8.dp))
                         Text(
-                            text = stringResource(R.string.app_name),
-                            fontWeight = FontWeight.Bold
+                            text = stringResource(R.string.app_name), fontWeight = FontWeight.Bold
                         )
                     }
                 },
@@ -77,19 +81,37 @@ private fun HomeScreen(
             )
         },
         content = {
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(it)
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
             ) {
+                item {
+                    OutlinedTextField(value = name,
+                        onValueChange = { name = it },
+                        label = { Text("_Name_") })
+                }
+                item {
+                    OutlinedTextField(value = durationInt.toString(),
+                        onValueChange = { durationInt = it.toIntOrNull() ?: 0 },
+                        label = { Text("_Duration_") })
+                }
+//                item {
+//                    OutlinedTextField(
+//                        value = durationInt.toString(),
+//                        onValueChange = { durationInt = it.toIntOrNull() ?: 0 },
+//                        label = { Text("_Duration_") }
+//                    )
+//                }
                 items(whateverList) { whatever ->
                     Text(text = whatever.toString())
                 }
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onCreateWhatever("FooBar") }) {
+            FloatingActionButton(onClick = { onCreateWhatever("FooBar", durationInt) }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         },

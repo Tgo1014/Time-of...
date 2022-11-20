@@ -29,8 +29,8 @@ class HomeViewModel @Inject constructor(
         observeWhateverList()
     }
 
-    fun createWhatever(name: String) {
-        upsertWhateverUseCase(WhateverDomain(name, 5.seconds))
+    fun createWhatever(name: String, duration: Int) {
+        upsertWhateverUseCase(WhateverDomain(name, duration.seconds))
     }
 
     private fun observeWhateverList() {

@@ -4,8 +4,8 @@ import java.time.Instant
 import kotlin.time.Duration
 
 data class WhateverDomain(
+    val id: Int = 0,
     val name: String,
     val duration: Duration,
-    val scheduleId: Long? = null,
     val created: Instant = Instant.now(),
 )

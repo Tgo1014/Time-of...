@@ -4,8 +4,8 @@ import tgo1014.timeof.domain.models.WhateverDomain
 import tgo1014.timeof.presentation.models.WhateverPresentation
 
 fun WhateverDomain.toPresentation() = WhateverPresentation(
+    id = id,
     name = name,
     duration = duration,
-    scheduleId = scheduleId,
     created = created
 )

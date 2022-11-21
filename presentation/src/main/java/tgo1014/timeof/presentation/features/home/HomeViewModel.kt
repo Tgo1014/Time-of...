@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import tgo1014.timeof.domain.models.WhateverDomain
 import tgo1014.timeof.domain.usecases.GetWhateverFlowListUseCase
 import tgo1014.timeof.domain.usecases.UpsertWhateverUseCase
@@ -29,8 +30,8 @@ class HomeViewModel @Inject constructor(
         observeWhateverList()
     }
 
-    fun createWhatever(name: String, duration: Int) {
-        upsertWhateverUseCase(WhateverDomain(name, duration.seconds))
+    fun createWhatever(name: String, duration: Int) = viewModelScope.launch {
+        upsertWhateverUseCase(WhateverDomain(name = name, duration = duration.seconds))
     }
 
     private fun observeWhateverList() {

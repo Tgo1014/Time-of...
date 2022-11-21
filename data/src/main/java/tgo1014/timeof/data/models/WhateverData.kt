@@ -1,8 +1,8 @@
 package tgo1014.timeof.data.models
 
-data class WhateverDO(
+data class WhateverData(
+    val id: Int,
     val name: String,
     val duration: Long,
-    val scheduleId: Long? = null,
     val created: Long,
 )

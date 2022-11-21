@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class WhateverDBO(
-    @PrimaryKey(autoGenerate = true) val uid: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "duration") val duration: Long,
     @ColumnInfo(name = "created") val created: Long,

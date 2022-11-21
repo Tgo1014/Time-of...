@@ -1,31 +1,29 @@
 package tgo1014.timeof.data.storage
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
+import tgo1014.timeof.data.models.mappers.toDbo
+import tgo1014.timeof.data.models.mappers.toDomain
+import tgo1014.timeof.data.storage.database.WhateverDao
 import tgo1014.timeof.domain.models.WhateverDomain
 import tgo1014.timeof.domain.storage.WhateverRepository
 import javax.inject.Inject
 
-class WhateverRepositoryImpl @Inject constructor() : WhateverRepository {
+class WhateverRepositoryImpl @Inject constructor(
+    private val whateverDao: WhateverDao,
+) : WhateverRepository {
 
     private val items = MutableStateFlow(emptyList<WhateverDomain>())
 
-    override fun getAllFlow(): Flow<List<WhateverDomain>> {
-        return items.asStateFlow()
-    }
+    override fun getAllFlow() = whateverDao.getAll()
+        .map { list -> list.map { it.toDomain() } }
 
     override fun upsert(whateverDomain: WhateverDomain) {
-        val items = items.value.toMutableList()
-        items.add(whateverDomain)
-        this.items.update { items }
+        whateverDao.upsert(whateverDomain.toDbo())
     }
 
     override fun delete(whateverDomain: WhateverDomain) {
-        val items = items.value.toMutableList()
-        items.remove(whateverDomain)
-        this.items.update { items }
+        whateverDao.delete(whateverDomain.toDbo())
     }
 
 }

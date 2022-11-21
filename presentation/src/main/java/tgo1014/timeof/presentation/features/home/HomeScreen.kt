@@ -121,5 +121,5 @@ private fun HomeScreen(
 @Composable
 @DefaultPreview
 private fun HomeScreenPreview() = TimeOfTheme {
-    HomeScreen(List(5) { WhateverPresentation("teasdas", 1.seconds) })
+    HomeScreen(List(5) { WhateverPresentation(name = "teasdas", duration = 1.seconds) })
 }

@@ -14,8 +14,8 @@ interface WhateverDao {
     fun getAll(): Flow<List<WhateverDBO>>
 
     @Upsert
-    fun insertAll(vararg users: WhateverDBO)
+    fun upsert(whateverDBO: WhateverDBO)
 
     @Delete
-    fun delete(user: WhateverDBO)
+    fun delete(whateverDBO: WhateverDBO)
 }
